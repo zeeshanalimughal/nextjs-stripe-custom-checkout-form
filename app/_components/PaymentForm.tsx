@@ -17,7 +17,7 @@ const PaymentForm = () => {
         state: '',
         postalCode: '',
     });
-    const [errorMessage, setErrorMessage] = useState(null);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
 
@@ -28,7 +28,7 @@ const PaymentForm = () => {
         }
     }, [stripe, elements]);
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
         setIsLoading(true);
 
@@ -63,7 +63,7 @@ const PaymentForm = () => {
                 },
             });
 
-            if (error) {
+            if (error && error.message) {
                 setErrorMessage(error.message);
                 setIsLoading(false);
                 return;
@@ -74,7 +74,7 @@ const PaymentForm = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ paymentMethodId: paymentMethod.id }),
+                body: JSON.stringify({ paymentMethodId: paymentMethod?.id }),
             });
 
             if (!response.ok) {
@@ -91,7 +91,7 @@ const PaymentForm = () => {
                     return_url: `${process.env.NEXT_PUBLIC_BASE_URL}/payment/return`,
                 });
 
-                if (confirmError) {
+                if (confirmError && confirmError.message) {
                     setErrorMessage(confirmError.message);
                     setIsLoading(false);
                     return;
@@ -107,18 +107,18 @@ const PaymentForm = () => {
                     setIsLoading(false);
                 }
             }
-        } catch (error) {
-            setErrorMessage(error.message);
+        } catch (error: any) {
+            setErrorMessage(error?.message || "");
             setIsLoading(false);
         }
     };
 
-    const handleAddressChange = (event) => {
+    const handleAddressChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
         setAddress((prevAddress) => ({ ...prevAddress, [name]: value }));
     };
 
-    const handleCancel = (e) => {
+    const handleCancel = (e: React.FormEvent) => {
         e.preventDefault();
         window.location.href = '/';
         setErrorMessage('');
