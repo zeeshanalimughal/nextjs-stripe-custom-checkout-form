@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import styles from './ReturnPage.module.css';
+import { Suspense } from 'react'
 
 const ReturnPage = () => {
     const searchParams = useSearchParams();
@@ -25,10 +26,12 @@ const ReturnPage = () => {
     }, [searchParams]);
 
     return (
-        <div className={styles.returnPage}>
-            <h2 className='heading2'>Payment Status</h2>
-            <p>{message}</p>
-        </div>
+        <Suspense fallback={<div>Loading...</div>}>
+            <div className={styles.returnPage}>
+                <h2 className='heading2'>Payment Status</h2>
+                <p>{message}</p>
+            </div>
+        </Suspense>
     );
 };
 

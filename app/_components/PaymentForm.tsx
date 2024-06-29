@@ -81,10 +81,10 @@ const PaymentForm = () => {
                 throw new Error('Failed to create payment intent');
             }
 
-            const { clientSecret, paymentIntent } = await response.json();
+            const { clientSecret } = await response.json();
 
             if (clientSecret) {
-                const { error: confirmError } = await stripe.confirmCardPayment(clientSecret, {
+                const { error: confirmError, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
                     payment_method: {
                         card: cardElement,
                     },
@@ -99,9 +99,11 @@ const PaymentForm = () => {
 
                 if (paymentIntent && paymentIntent.status === 'succeeded') {
                     setSuccessMessage('Payment successful!');
+                    setTimeout(() => {
+                        window.location.href = "/"
+                    }, 3000)
                     setErrorMessage('');
                     setIsLoading(false);
-                    // Reset form fields or redirect to a success page
                 } else {
                     setErrorMessage('PaymentIntent not succeeded');
                     setIsLoading(false);
