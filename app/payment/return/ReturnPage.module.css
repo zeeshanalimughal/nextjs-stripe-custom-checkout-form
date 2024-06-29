@@ -1,0 +1,18 @@
+.returnPage {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.returnPage h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.returnPage p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+}
